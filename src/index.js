@@ -2,7 +2,7 @@
  * @Author: youzhao.zhou
  * @Date: 2020-12-20 09:11:19
  * @Last Modified by: youzhao.zhou
- * @Last Modified time: 2020-12-20 18:35:40
+ * @Last Modified time: 2020-12-20 18:38:50
  * @Description 根据ApiList生成Api Typing
  * 1. 通过命令行获取到apiList路径和生成d.ts的路径
  * 2. 以apiList为入口，使用webpack编译apiList，得到编译后的结果
@@ -19,7 +19,7 @@ const webpack = require("webpack");
 const globby = require("globby");
 const mkDir = require("make-dir");
 const { Command } = require("commander");
-const baseConfig = require("./src/webpack.config");
+const baseConfig = require("./webpack.config");
 
 const UNESCAPED_GLOB_SYMBOLS_RE = /(\\?)([()*?[\]{|}]|^!|[!+@](?=\())/g;
 const curPathUrl = process.cwd().replace(UNESCAPED_GLOB_SYMBOLS_RE, "\\$2");
