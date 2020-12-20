@@ -10,6 +10,7 @@ module.exports = function baseConfig(entry) {
     output: {
       filename: "[name].js",
       path: path.join(process.cwd(), "node_modules/.tmp/apiTypes"),
+      libraryTarget: "umd",
     },
     devtool: false,
     resolve: {
