@@ -1,0 +1,28 @@
+{
+  "name": "mipp-api-typing",
+  "version": "1.0.0",
+  "description": "Api typing",
+  "main": "bin/index.js",
+  "bin": {
+    "mipp-api": "bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bugszhou/mipp-api-typing.git"
+  },
+  "author": "yiri",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bugszhou/mipp-api-typing/issues"
+  },
+  "homepage": "https://github.com/bugszhou/mipp-api-typing#readme",
+  "dependencies": {
+    "commander": "^6.2.1",
+    "globby": "^11.0.1",
+    "make-dir": "^3.1.0",
+    "webpack": "^5.11.0"
+  }
+}
