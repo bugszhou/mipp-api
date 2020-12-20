@@ -2,7 +2,7 @@
  * @Author: youzhao.zhou
  * @Date: 2020-12-20 09:11:19
  * @Last Modified by: youzhao.zhou
- * @Last Modified time: 2020-12-20 18:38:50
+ * @Last Modified time: 2020-12-20 20:09:32
  * @Description 根据ApiList生成Api Typing
  * 1. 通过命令行获取到apiList路径和生成d.ts的路径
  * 2. 以apiList为入口，使用webpack编译apiList，得到编译后的结果
@@ -44,12 +44,6 @@ function doParse(inputFile) {
         console.error(err.details);
       }
       return;
-    }
-
-    const info = stats.toJson();
-
-    if (stats.hasErrors()) {
-      throw new Error(info.errors);
     }
 
     try {
@@ -114,9 +108,8 @@ function getApiList(sourceUrl) {
   const content = readFileSync(sourceUrl, {
     encoding: "utf-8",
   });
-  const apiList = new Function(
-    `process.env.ENV_DATA = {}; return ${content}`,
-  )();
+  writeFileSync(sourceUrl, `const process = {env: {ENV_DATA: {}}}; ${content};`)
+  const apiList = require(sourceUrl);
 
   let str = `/*
  * @Description 主包接口定义声明

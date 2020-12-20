@@ -41,7 +41,9 @@ module.exports = function baseConfig(entry) {
     },
     plugins: [
       new ForkTsCheckerWebpackPlugin({
-        tsconfig: path.resolve(process.cwd(), "./tsconfig.json"),
+        typescript: {
+          configFile: path.resolve(process.cwd(), "./tsconfig.json"),
+        },
       }),
     ],
   };
