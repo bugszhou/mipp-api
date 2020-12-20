@@ -21,8 +21,10 @@
   "homepage": "https://github.com/bugszhou/mipp-api-typing#readme",
   "dependencies": {
     "commander": "^6.2.1",
+    "fork-ts-checker-webpack-plugin": "^6.0.7",
     "globby": "^11.0.1",
     "make-dir": "^3.1.0",
+    "ts-loader": "^8.0.12",
     "webpack": "^5.11.0"
   }
 }

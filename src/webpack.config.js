@@ -37,21 +37,7 @@ module.exports = function baseConfig(entry) {
           ],
           exclude: /(node_modules)/,
         },
-        {
-          test: /\.json$/,
-          use: {
-            loader: "mini-json-loader",
-            options: {
-              test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-            },
-          },
-          exclude: /node_modules/,
-        },
       ],
-    },
-    optimization: {
-      minimize: false,
-      noEmitOnErrors: true,
     },
     plugins: [
       new ForkTsCheckerWebpackPlugin({
