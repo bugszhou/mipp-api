@@ -1,6 +1,17 @@
 const path = require("path"),
   ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
+function fileLoader() {
+  return {
+    limit: 1,
+    context: "src",
+    name: "[path][name].[ext]",
+    publicPath(url) {
+      return "/" + url;
+    },
+  };
+}
+
 module.exports = function baseConfig(entry) {
   return {
     mode: "development",
@@ -37,6 +48,21 @@ module.exports = function baseConfig(entry) {
             },
           ],
           exclude: /(node_modules)/,
+        },
+        {
+          test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+          loader: "url-loader",
+          options: fileLoader(),
+        },
+        {
+          test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+          loader: "url-loader",
+          options: fileLoader(),
+        },
+        {
+          test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+          loader: "url-loader",
+          options: fileLoader(),
         },
       ],
     },
