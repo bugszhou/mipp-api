@@ -2,7 +2,7 @@
  * @Author: youzhao.zhou
  * @Date: 2020-12-20 09:11:19
  * @Last Modified by: youzhao.zhou
- * @Last Modified time: 2020-12-22 11:10:48
+ * @Last Modified time: 2020-12-22 14:38:56
  * @Description 根据ApiList生成Api Typing
  * 1. 通过命令行获取到apiList路径和生成d.ts的路径
  * 2. 以apiList为入口，使用webpack编译apiList，得到编译后的结果
@@ -128,7 +128,7 @@ function getInterfaceStr(api, key) {
   /**
    *${!api.desc ? "" : ` ${api.desc}`}
    *
-   * apiName: ${api.apiName}
+   * @ApiPath: ${api.apiName}
    *${isEmptyParams(api.params) ? "" : " @param opts"}
    */
   ${key}(
