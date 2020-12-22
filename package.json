@@ -1,6 +1,6 @@
 {
   "name": "mipp-api-typing",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "description": "Api typing",
   "main": "bin/index.js",
   "bin": {
