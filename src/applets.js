@@ -2,7 +2,7 @@
  * @Author: youzhao.zhou
  * @Date: 2020-12-20 09:11:19
  * @Last Modified by: youzhao.zhou
- * @Last Modified time: 2021-03-01 14:36:32
+ * @Last Modified time: 2021-03-01 14:43:45
  * @Description 根据ApiList生成Api Typing
  * 1. 通过命令行获取到apiList路径和生成d.ts的路径
  * 2. 以apiList为入口，使用webpack编译apiList，得到编译后的结果
@@ -142,7 +142,7 @@ function getInterfaceStr(api, key) {
   ${key}(
     options${
       isRequired(api.paramsTyping, api.dataTyping) ? "" : "?"
-    }: IAppletsRequestConfig<${getTypingVal(api.dataTyping)}, ${getTypingVal(api.paramsTyping)}}> & {
+    }: IAppletsRequestConfig<${getTypingVal(api.dataTyping)}, ${getTypingVal(api.paramsTyping)}> & {
       data${typeRequired(api.dataTyping) ? "" : "?"}: ${getTypingVal(api.dataTyping)};
       params${typeRequired(api.paramsTyping) ? "" : "?"}: ${getTypingVal(api.paramsTyping)};
     },
