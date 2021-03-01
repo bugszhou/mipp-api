@@ -4,7 +4,8 @@
   "description": "Api typing",
   "main": "bin/index.js",
   "bin": {
-    "mipp-api": "bin/index.js"
+    "mipp-api": "bin/index.js",
+    "mipp-applets": "bin/mippApplets.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

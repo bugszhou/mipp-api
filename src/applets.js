@@ -2,7 +2,7 @@
  * @Author: youzhao.zhou
  * @Date: 2020-12-20 09:11:19
  * @Last Modified by: youzhao.zhou
- * @Last Modified time: 2021-03-01 14:08:38
+ * @Last Modified time: 2021-03-01 14:07:55
  * @Description 根据ApiList生成Api Typing
  * 1. 通过命令行获取到apiList路径和生成d.ts的路径
  * 2. 以apiList为入口，使用webpack编译apiList，得到编译后的结果
@@ -27,7 +27,9 @@ const curPathUrl = process.cwd().replace(UNESCAPED_GLOB_SYMBOLS_RE, "\\$2");
 const program = new Command();
 program.version("1.0.0");
 program.option("-o, --outdir <string>", "output types file");
+program.option("-i, --interface <string>", "interface name");
 program.arguments("<source>").action((inputFile) => {
+  console.log(inputFile);
   const absoluteUrl = replaceBackslashes(join(curPathUrl, inputFile));
   if (!existsSync(absoluteUrl)) {
     throw new Error(`Not Find ${inputFile}`);
@@ -77,7 +79,7 @@ function getApiListPathUrl(importPathUrl) {
 function getOutDir(outdir) {
   if (outdir) {
     const filePath = replaceBackslashes(join(curPathUrl, outdir));
-    
+
     if (extname(filePath) !== ".ts") {
       if (!existsSync(filePath)) {
         mkDir.sync(filePath);
@@ -85,11 +87,11 @@ function getOutDir(outdir) {
       return join(filePath, "index.d.ts");
     }
     const parantPath = dirname(filePath);
-    
+
     if (!existsSync(parantPath)) {
       mkDir.sync(parantPath);
     }
-    
+
     return filePath;
   }
   const outpath = replaceBackslashes(
@@ -111,14 +113,17 @@ function getApiList(sourceUrl) {
   const content = readFileSync(sourceUrl, {
     encoding: "utf-8",
   });
-  writeFileSync(sourceUrl, `const process = {env: {ENV_DATA: {}}}; ${content};`)
+  writeFileSync(
+    sourceUrl,
+    `const process = {env: {ENV_DATA: {}}}; ${content};`,
+  );
   const apiList = require(sourceUrl);
 
   let str = `/*
  * @Description 主包接口定义声明
  */
 
-interface IApis {`;
+interface ${program.interface || "IApis"} {`;
   Object.keys(apiList.default).forEach((item) => {
     str += getInterfaceStr(apiList.default[item], item);
   });
@@ -131,12 +136,17 @@ function getInterfaceStr(api, key) {
   /**
    *${!api.desc ? "" : ` ${api.desc}`}
    *
-   * @ApiPath ${api.apiName}
-   *${isEmptyParams(api.params) ? "" : " @param opts"}
+   * @ApiPath ${api.apiUrl || api.apiName}
+   *${isRequired(api.paramsTyping, api.dataTyping) ? " @param options" : ""}
    */
   ${key}(
-    opts${isEmptyParams(api.params) ? "?" : ""}: IMiAPI.IApiOpts<${api.paramsTyping || getParamsInterface(api.params)}>,
-  ): Promise<IMiAPI.IApiSuccess<${getResInterface(api.res)}>>;
+    options${
+      isRequired(api.paramsTyping, api.dataTyping) ? "" : "?"
+    }: IAppletsRequestConfig<${getTypingVal(api.paramsTyping)}, ${getTypingVal(api.dataTyping)}> & {
+      data${typeRequired(api.dataTyping) ? "" : "?"}: ${getTypingVal(api.dataTyping)},
+      params${typeRequired(api.paramsTyping) ? "" : "?"}: ${getTypingVal(api.paramsTyping)},
+    },
+  ): Promise<${getResInterface(api.resTyping)}>;
 `;
 }
 
@@ -145,6 +155,31 @@ function getResInterface(opts) {
     return "any";
   }
   return opts;
+}
+
+function isRequired(paramsTyping, dataTyping) {
+  if (
+    (isEmptyParams(paramsTyping) || !paramsTyping.required) &&
+    (isEmptyParams(dataTyping) || !dataTyping.required)
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+function getTypingVal(val) {
+  if (isEmptyParams(val)) {
+    return "any";
+  }
+  return val.type;
+}
+
+function typeRequired(val) {
+  if (isEmptyParams(val) || !val.required) {
+    return false;
+  }
+  return true;
 }
 
 function isEmptyParams(param) {
